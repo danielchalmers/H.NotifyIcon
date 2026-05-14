@@ -267,7 +267,10 @@ internal static class TrayIconMethods
 
     public static unsafe bool TryShowNotification(
         Guid id,
+        nint handle,
         NOTIFY_ICON_DATA_FLAGS additionalFlags,
+        string toolTip,
+        uint uCallbackMessage,
         string title,
         string message,
         NOTIFY_ICON_INFOTIP_FLAGS infoFlags,
@@ -280,9 +283,13 @@ internal static class TrayIconMethods
             {
                 cbSize = (uint)sizeof(NOTIFYICONDATAW64),
                 uFlags = additionalFlags |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_MESSAGE |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_TIP |
                     NOTIFY_ICON_DATA_FLAGS.NIF_INFO |
                     NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
+                hWnd = new HWND(handle),
                 guidItem = id,
+                uCallbackMessage = uCallbackMessage,
                 dwInfoFlags = (uint)infoFlags,
                 hBalloonIcon = new HICON(balloonIconHandle),
                 Anonymous =
@@ -290,6 +297,7 @@ internal static class TrayIconMethods
                     uTimeout = timeoutInMilliseconds,
                 }
             };
+            toolTip.SetTo(&data.szTip._0, data.szTip.Length);
             message.SetTo(&data.szInfo._0, data.szInfo.Length);
             title.SetTo(&data.szInfoTitle._0, data.szInfoTitle.Length);
 
@@ -301,9 +309,13 @@ internal static class TrayIconMethods
             {
                 cbSize = (uint)sizeof(NOTIFYICONDATAW32),
                 uFlags = additionalFlags |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_MESSAGE |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_TIP |
                     NOTIFY_ICON_DATA_FLAGS.NIF_INFO |
                     NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
+                hWnd = new HWND(handle),
                 guidItem = id,
+                uCallbackMessage = uCallbackMessage,
                 dwInfoFlags = (uint)infoFlags,
                 hBalloonIcon = new HICON(balloonIconHandle),
                 Anonymous =
@@ -311,6 +323,7 @@ internal static class TrayIconMethods
                     uTimeout = timeoutInMilliseconds,
                 }
             };
+            toolTip.SetTo(&data.szTip._0, data.szTip.Length);
             message.SetTo(&data.szInfo._0, data.szInfo.Length);
             title.SetTo(&data.szInfoTitle._0, data.szInfoTitle.Length);
 
