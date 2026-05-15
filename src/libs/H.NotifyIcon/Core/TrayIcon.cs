@@ -643,6 +643,8 @@ public partial class TrayIcon : IDisposable
 
         if (!TrayIconMethods.TryShowNotification(
             id: Id,
+            handle: WindowHandle,
+            uCallbackMessage: MessageWindow.CallbackMessageId,
             additionalFlags: additionalFlags,
             toolTip: ToolTip,
             title: title,

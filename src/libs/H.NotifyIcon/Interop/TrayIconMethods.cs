@@ -267,6 +267,8 @@ internal static class TrayIconMethods
 
     public static unsafe bool TryShowNotification(
         Guid id,
+        nint handle,
+        uint uCallbackMessage,
         NOTIFY_ICON_DATA_FLAGS additionalFlags,
         string toolTip,
         string title,
@@ -281,10 +283,13 @@ internal static class TrayIconMethods
             {
                 cbSize = (uint)sizeof(NOTIFYICONDATAW64),
                 uFlags = additionalFlags |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_MESSAGE |
                     NOTIFY_ICON_DATA_FLAGS.NIF_INFO |
                     NOTIFY_ICON_DATA_FLAGS.NIF_TIP |
                     NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
+                hWnd = new HWND(handle),
                 guidItem = id,
+                uCallbackMessage = uCallbackMessage,
                 dwInfoFlags = (uint)infoFlags,
                 hBalloonIcon = new HICON(balloonIconHandle),
                 Anonymous =
@@ -304,10 +309,13 @@ internal static class TrayIconMethods
             {
                 cbSize = (uint)sizeof(NOTIFYICONDATAW32),
                 uFlags = additionalFlags |
+                    NOTIFY_ICON_DATA_FLAGS.NIF_MESSAGE |
                     NOTIFY_ICON_DATA_FLAGS.NIF_INFO |
                     NOTIFY_ICON_DATA_FLAGS.NIF_TIP |
                     NOTIFY_ICON_DATA_FLAGS.NIF_GUID,
+                hWnd = new HWND(handle),
                 guidItem = id,
+                uCallbackMessage = uCallbackMessage,
                 dwInfoFlags = (uint)infoFlags,
                 hBalloonIcon = new HICON(balloonIconHandle),
                 Anonymous =
